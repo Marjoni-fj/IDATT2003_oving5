@@ -32,14 +32,20 @@ public class DeckOfCards {
    */
   public PlayingCard[] dealHand(int n) {
     if (n < 0 || n > deckOfCards.length) {
-      throw new IllegalArgumentException("Number of cards to deal must be between 0 and " + deckOfCards.length);
+        throw new IllegalArgumentException("Number of cards to deal must be between 0 and " + deckOfCards.length);
     }
-    Random random = new Random(deckOfCards.length);
     PlayingCard[] hand = new PlayingCard[n];
+    int remainingCards = deckOfCards.length;
+    Random random = new Random();
     for (int i = 0; i < n; i++) {
-      int randomCardIndex = random.nextInt(deckOfCards.length);
-      hand[i] = deckOfCards[randomCardIndex];
+        int randomIndex = random.nextInt(remainingCards);
+        hand[i] = deckOfCards[randomIndex];
+        
+        deckOfCards[randomIndex] = deckOfCards[remainingCards - 1];
+        remainingCards--;
     }
+
     return hand;
-  }
+}
+
 }
