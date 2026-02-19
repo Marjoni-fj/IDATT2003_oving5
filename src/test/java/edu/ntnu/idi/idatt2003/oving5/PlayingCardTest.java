@@ -42,8 +42,9 @@ class PlayingCardTest {
 
   @Test
   void testIllegalCard() {
-    assertThrows(IllegalArgumentException.class, () -> new PlayingCard('G', 12));
+    assertThrows(IllegalArgumentException.class, () -> new PlayingCard('X', 12));
     assertThrows(IllegalArgumentException.class, () -> new PlayingCard('C', 0));
+    assertThrows(IllegalArgumentException.class, () -> new PlayingCard('H', 14));
   }
 
   @Test
@@ -52,6 +53,7 @@ class PlayingCardTest {
     assertEquals(testCard.getAsString(), identicalCard.getAsString());
     assertEquals(testCard.getSuit(), identicalCard.getSuit());
     assertEquals(testCard.getFace(), identicalCard.getFace());
+    assertTrue(testCard.equals(new PlayingCard('H', 4)));
   }
 
   @Test
@@ -60,5 +62,20 @@ class PlayingCardTest {
     assertNotEquals(testCard.getAsString(), testCard2.getAsString());
     assertNotEquals(testCard.getSuit(), testCard2.getSuit());
     assertNotEquals(testCard.getFace(), testCard2.getFace());
+  }
+
+  @Test
+  void testEqualsWithNull() {
+    assertFalse(testCard.equals(null));
+  }
+
+  @Test
+  void testEqualsWithDifferentClass() {
+    assertFalse(testCard.equals("Not a card"));
+  }
+
+  @Test
+  void testHashCode() {
+    assertEquals(31 * (31 * 7 + 'H') + 4, identicalCard.hashCode());
   }
 }
