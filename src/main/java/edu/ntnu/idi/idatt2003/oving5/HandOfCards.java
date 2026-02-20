@@ -1,48 +1,30 @@
 package edu.ntnu.idi.idatt2003.oving5;
-
+import java.util.List;
+/**
+ * Represents a hand of playing cards. A hand of cards consists of a list of
+ * playing cards, which may be empty or contain any number of cards.
+ */
 public class HandOfCards {
-  private final PlayingCard[] handOfCards;
+  private List<PlayingCard> handOfCards;
 
-    public HandOfCards(PlayingCard[] cards) {
-        this.handOfCards = cards;
+  /**
+   * Creates a new hand of cards with the specified list of playing cards.
+   * @param handOfCards the list of playing cards in the hand
+  */
+  public HandOfCards(List<PlayingCard> handOfCards) {
+    if (handOfCards == null || handOfCards.contains(null)) {
+      throw new IllegalArgumentException("Hand of cards cannot be null or contain null cards");
     }
+    this.handOfCards = handOfCards;
+  }
 
-    public PlayingCard[] getCards() {
-        return handOfCards;
-    }
+  /**
+   * Returns the list of playing cards in the hand.
+   * @return the list of playing cards in the hand
+   */
+  public List<PlayingCard> getHandOfCards() {
+    return handOfCards;
 
-    public int sumOfCardValues() {
-        int sum = 0;
-        for (PlayingCard card : handOfCards) {
-            sum += card.getFace();
-        }
-        return sum;
-    }
-
-    public boolean hasPair() {
-      for (int i = 0; i < handOfCards.length; i++) {
-          for (int j = i + 1; j < handOfCards.length; j++) {
-              if (handOfCards[i].getFace() == handOfCards[j].getFace()) {
-                  return true;
-              }
-          }
-      }
-      return false;
-    }
-
-    public boolean hasThreeOfAKind() {
-      for (PlayingCard card : handOfCards) {
-          int count = 0;
-          for (PlayingCard otherCard : handOfCards) {
-              if (card.getFace() == otherCard.getFace()) {
-                  count++;
-              }
-          }
-          if (count == 3) {
-              return true;
-          }
-      }
-      return false;
-    }
-
+  
+}
 }
