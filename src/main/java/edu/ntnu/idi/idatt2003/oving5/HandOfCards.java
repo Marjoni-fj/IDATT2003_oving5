@@ -31,6 +31,38 @@ public class HandOfCards {
   }
 
   /**
+   * Evaluates the hand of cards and returns a string representation of
+   * the best possible poker hand that can be made with the cards in the hand.
+   * The method checks for each possible poker hand in order of rank, 
+   * starting with the highest rank (royal flush) and ending with the lowest rank (high card).
+
+   * @return a {@code String} representation of the best possible poker hand 
+   * that can be made with the cards in the hand
+   */
+  public String evaluateHand() {
+    if (hasRoyalFlush()) return "Royal Flush";
+    if (hasStraightFlush()) return "Straight Flush";
+    if (hasFourOfAKind()) return "Four of a Kind";
+    if (hasFullHouse()) return "Full House";
+    if (hasFlush()) return "Flush";
+    if (hasStraight()) return "Straight";
+    if (hasThreeOfAKind()) return "Three of a Kind";
+    if (hasTwoPair()) return "Two Pair";
+    if (hasPair()) return "Pair";
+    return "High Card";
+}
+
+  /**
+  * Returns the sum of the face values of the cards in the hand. 
+  * The face value of a card is an integer that represents the rank of the card,
+  * with Ace being 1, Jack being 11, Queen being 12, and King being 13.
+  * @return the sum of the face values of the cards in the hand
+  */
+  public int getSumOfFaces() {
+    return handOfCards.stream().mapToInt(PlayingCard::getFace).sum();
+  }
+
+  /**
    * Returns a map of face values to their counts in the hand. The keys of the map are the face values of the cards (1 to 13), and the values are the number of
    * cards in the hand with that face value.
    * @return a map of face values to their counts in the hand
@@ -55,34 +87,26 @@ public class HandOfCards {
                     PlayingCard::getSuit,
                     Collectors.counting()));
   }
-  /**
-   * Returns a sorted list of the face values of the cards in the hand. 
-   * The list is sorted in ascending order, and may contain duplicate values 
-   * if there are multiple cards with the same face value in the hand.
-   * @return a sorted list of the face values of the cards in the hand
-   */
-  private List<Integer> getSortedFaces() {
-    return handOfCards.stream()
-            .map(PlayingCard::getFace).sorted()
-            .collect(Collectors.toList());
-  }
 
   /**
-   * Returns a sorted list of the face values of the cards in the hand, with Aces (face value 1) treated as 14.
-   * The list is sorted in ascending order, and may contain duplicate values
-   * if there are multiple cards with the same face value in the hand. If the hand contains an Ace (face value 1), 
-   * it is treated as having a face value of 14 for the purposes of sorting and evaluating straights.
-   * @return a sorted list of the face values of the cards in the hand, with Aces treated as 14
+   * Returns a sorted list of the face values of the cards in the hand, 
+   * treating Ace as either low (1) or high (14) depending on the value of aceHigh.
+   * If aceHigh is true, Ace is treated as high and its face value is considered to be 14. 
+   * If aceHigh is false, Ace is treated as low and its face value is considered to be 1.
+   * The returned list is sorted in ascending order.
+   * @param aceHigh a boolean value that determines whether Ace is treated as high or low
+   * @return a sorted list of the face values of the cards in the hand, with Ace treated as either high or low depending on the value of aceHigh
    */
-  public List<Integer> hasAce() {
-    List<Integer> sorted = new ArrayList<>(getSortedFaces());
-    if (sorted.contains(1)) {
-      sorted.remove(Integer.valueOf(1));
-      sorted.add(14);
-      Collections.sort(sorted);
+  private List<Integer> getSortedFaces(boolean aceHigh) {
+    List<Integer> sorted = new ArrayList<>();
+    for (PlayingCard card : handOfCards) {
+        int face = card.getFace();
+        if (aceHigh && face == 1) face = 14; // treat Ace as high
+        sorted.add(face);
     }
+    Collections.sort(sorted);
     return sorted;
-  }
+}
 
   /**
    * Returns true if the hand contains a pair, which is a hand that contains two cards with the same face value.
@@ -118,7 +142,7 @@ public class HandOfCards {
    * @return true if the hand contains a straight, false otherwise
    */
   public boolean hasStraight() {
-    List<Integer> straight = hasAce();
+    List<Integer> straight = getSortedFaces(true);
     int handSize = straight.size();
     for (int i = 0; i < handSize - 1 ; i++) {
       if (straight.get(i+1) != straight.get(i) + 1) {
@@ -172,7 +196,7 @@ public class HandOfCards {
    */
   public boolean hasRoyalFlush() {
     if (!hasFlush()) return false;
-    List<Integer> sorted = hasAce();
+    List<Integer> sorted = getSortedFaces(true);
     return sorted.equals(List.of(10, 11, 12, 13, 14));
   }
 }
