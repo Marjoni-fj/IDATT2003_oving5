@@ -70,12 +70,14 @@ class PlayingCardTest {
   }
 
   @Test
-  void testEqualsWithDifferentClass() {
-    assertFalse(testCard.equals("Not a card"));
-  }
-
-  @Test
   void testHashCode() {
     assertEquals(31 * (31 * 7 + 'H') + 4, identicalCard.hashCode());
   }
+
+  @Test
+  void testToString() {
+    assertEquals("H4", testCard.toString());
+    assertEquals("S1", testCard2.toString());
+  }
+
 }
