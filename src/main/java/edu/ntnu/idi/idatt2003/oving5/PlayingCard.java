@@ -71,6 +71,11 @@ public class PlayingCard {
   }
 
   @Override
+  public String toString() {
+    return "" + suit + face; // 'H' + 4 => "H4"
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
