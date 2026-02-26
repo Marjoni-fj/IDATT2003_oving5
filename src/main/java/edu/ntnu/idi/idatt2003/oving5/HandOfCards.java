@@ -16,10 +16,14 @@ public class HandOfCards {
    * @param handOfCards the list of playing cards in the hand
   */
   public HandOfCards(List<PlayingCard> handOfCards) {
-    if (handOfCards == null || handOfCards.contains(null)) {
-      throw new IllegalArgumentException("Hand of cards cannot be null or contain null cards");
+    if (handOfCards == null) {
+        throw new IllegalArgumentException("Hand of cards cannot be null");
     }
-    this.handOfCards = handOfCards;
+    for (PlayingCard card : handOfCards) {
+        if (card == null) throw new IllegalArgumentException("Card cannot be null");
+    }
+    // defensive copy
+    this.handOfCards = new ArrayList<>(handOfCards);
   }
 
   /**
@@ -27,7 +31,7 @@ public class HandOfCards {
    * @return the list of playing cards in the hand
    */
   public List<PlayingCard> getHandOfCards() {
-    return handOfCards;
+    return new ArrayList<>(handOfCards);
   }
 
   /**
