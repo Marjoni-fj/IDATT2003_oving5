@@ -77,6 +77,19 @@ public class HandOfCards {
   }
 
   /**
+   * Returns a list of the cards in the hand that have the specified suit. 
+   * The suit is represented by a single character: 'S' for Spades, 'H' for Hearts, 'D' for Diamonds, and 'C' for Clubs.
+   * @param suit the suit to search for
+   * @return a list of cards with the specified suit
+   */
+  public List<PlayingCard> getCardsContaining(char suit) {
+    if (suit != 'H' && suit != 'D' && suit != 'C' && suit != 'S') {
+      throw new IllegalArgumentException("Parameter suit must be one of H, D, C or S");
+    }
+    return handOfCards.stream().filter(card -> card.getSuit() == suit).collect(Collectors.toList());
+  }
+
+  /**
    * Returns a map of face values to their counts in the hand. The keys of the map are the face values of the cards (1 to 13), and the values are the number of
    * cards in the hand with that face value.
    * @return a map of face values to their counts in the hand
