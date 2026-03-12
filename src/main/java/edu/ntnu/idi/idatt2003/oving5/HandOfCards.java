@@ -57,14 +57,6 @@ public class HandOfCards {
   }
 
   /**
-   * Returns the sum of the suit values of the cards in the hand.
-   * @return the sum of the suit values of the cards in the hand
-   */
-  public int getSumOfSuits() {
-    return handOfCards.stream().mapToInt(PlayingCard::getSuit).sum();
-  }
-
-  /**
   * Returns the sum of the face values of the cards in the hand. 
   * The face value of a card is an integer that represents the rank of the card,
   * with Ace being 1, Jack being 11, Queen being 12, and King being 13.
@@ -72,6 +64,16 @@ public class HandOfCards {
   */
   public int getSumOfFaces() {
     return handOfCards.stream().mapToInt(PlayingCard::getFace).sum();
+  }
+
+  /**
+   * Returns true if the hand contains the Queen of Spades, which is a card with the suit 'S' and the face value 12.
+   * The Queen of Spades is a specific card in a standard deck of playing cards, 
+   * and is often considered an unlucky card in certain card games.
+   * @return true if the hand contains the Queen of Spades, false otherwise
+   */
+  public boolean hasQueenOfSpades() {
+    return handOfCards.stream().anyMatch(card -> card.getFace() == 12 && card.getSuit() == 'S');
   }
 
   /**
