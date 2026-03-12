@@ -26,24 +26,26 @@ public void start(Stage primaryStage) {
     primaryStage.setTitle("Poker");
     BorderPane rootNode = new BorderPane();
 
+    /* Deal Hand button */
     Button dealHand = new Button("Deal Hand");
-    rootNode.setRight(dealHand);
+    rootNode.setCenter(dealHand);
     dealHand.setOnMouseEntered(e -> dealHand.setCursor(Cursor.HAND));
     dealHand.setOnMouseExited(e -> dealHand.setCursor(Cursor.DEFAULT));
 
     VBox cardDisplayWrapper = new VBox(20);
     cardDisplayWrapper.setPadding(new Insets(20));
 
+    /* Card display */
     HBox deckDisplay = new HBox(10);
     Label handLabel = new Label();
     handLabel.setFont(new Font("Arial", 36));
     handLabel.setStyle("-fx-text-fill: darkblue;");
-
     cardDisplayWrapper.getChildren().addAll(deckDisplay, handLabel);
     rootNode.setTop(cardDisplayWrapper);
 
     CardDisplay cardDisplay = new CardDisplay(deckDisplay, handLabel);
 
+    /* Deal Hand action */
     dealHand.setOnAction(e -> {
         DeckOfCards deck = new DeckOfCards();
         List<PlayingCard> dealtCards = deck.dealHand(5);

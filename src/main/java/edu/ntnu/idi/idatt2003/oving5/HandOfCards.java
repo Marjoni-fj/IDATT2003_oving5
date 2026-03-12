@@ -54,7 +54,15 @@ public class HandOfCards {
     if (hasTwoPair()) return "Two Pair";
     if (hasPair()) return "Pair";
     return "High Card";
-}
+  }
+
+  /**
+   * Returns the sum of the suit values of the cards in the hand.
+   * @return the sum of the suit values of the cards in the hand
+   */
+  public int getSumOfSuits() {
+    return handOfCards.stream().mapToInt(PlayingCard::getSuit).sum();
+  }
 
   /**
   * Returns the sum of the face values of the cards in the hand. 
