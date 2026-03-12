@@ -20,7 +20,7 @@ public class HandOfCards {
         throw new IllegalArgumentException("Hand of cards cannot be null");
     }
     for (PlayingCard card : handOfCards) {
-        if (card == null) throw new IllegalArgumentException("Card cannot be null");
+        if (card == null) throw new IllegalArgumentException("Hand of cards contains an illegal null card");
     }
     // defensive copy
     this.handOfCards = new ArrayList<>(handOfCards);

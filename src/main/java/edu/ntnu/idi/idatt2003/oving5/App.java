@@ -33,15 +33,7 @@ public class App extends Application {
     separator.setPrefWidth(3);
     
 
-    /*ButtonWrapper */
-    VBox buttonWrapper = new VBox(10);
-    buttonWrapper.setPadding(new Insets(20));
-    buttonWrapper.setStyle("-fx-background-color: lightgray; -fx-alignment: center;");
-    buttonWrapper.setPrefWidth(150);
-    rootNode.setLeft(buttonWrapper);
-
-/* Buttons */
-
+    /* Buttons */
     Button dealHand = new Button("Deal Hand");
     dealHand.setOnMouseEntered(e -> dealHand.setCursor(Cursor.HAND));
     dealHand.setOnMouseExited(e -> dealHand.setCursor(Cursor.DEFAULT));
@@ -50,6 +42,13 @@ public class App extends Application {
     checkHand.setDisable(true);
     checkHand.setOnMouseEntered(e -> checkHand.setCursor(Cursor.HAND));
     checkHand.setOnMouseExited(e -> checkHand.setCursor(Cursor.DEFAULT));
+
+    /*ButtonWrapper */
+    VBox buttonWrapper = new VBox(10);
+    buttonWrapper.setPadding(new Insets(20));
+    buttonWrapper.setStyle("-fx-background-color: lightgray; -fx-alignment: center;");
+    buttonWrapper.setPrefWidth(150);
+    rootNode.setLeft(buttonWrapper);
 
     buttonWrapper.getChildren().addAll(dealHand, checkHand);
 
@@ -75,14 +74,9 @@ public class App extends Application {
     flushLabel.setFont(new Font("Arial", 18));
 
     cardDisplayWrapper.getChildren().addAll(
-      deckDisplay,
-      handLabel,
-      checkDisplay,
-      sumLabel,
-      heartsLabel,
-      queenLabel,
-      flushLabel
-    );
+      deckDisplay, handLabel, checkDisplay,
+      sumLabel, heartsLabel, queenLabel,
+      flushLabel);
 
     rootNode.setCenter(cardDisplayWrapper);
 

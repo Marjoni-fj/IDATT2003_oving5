@@ -2,6 +2,9 @@ package edu.ntnu.idi.idatt2003.oving5;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class HandOfCardsTest {
@@ -91,7 +94,7 @@ public class HandOfCardsTest {
               new PlayingCard('D', 7),
               new PlayingCard('S', 3),
               new PlayingCard('C', 10),
-              new PlayingCard('H', 12)
+              new PlayingCard('S', 12)
       ));
   }
 
@@ -103,6 +106,46 @@ public class HandOfCardsTest {
               new PlayingCard('C', 11),
               new PlayingCard('H', 13)
       ));
+  }
+
+  @Test
+  void constructorThrowsExceptionForInvalidHand() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+      new HandOfCards(null);
+    });
+    assertEquals("Hand of cards cannot be null", exception.getMessage());
+  }
+
+  @Test
+  void constructorThrowsExceptionForNullCard() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+      List<PlayingCard> cardsWithNull = new ArrayList<>();
+      cardsWithNull.add(new PlayingCard('H', 10));
+      cardsWithNull.add(null);
+      cardsWithNull.add(new PlayingCard('H', 12));
+      cardsWithNull.add(new PlayingCard('H', 13));
+      cardsWithNull.add(new PlayingCard('H', 1));
+      
+      new HandOfCards(cardsWithNull);
+      });
+      
+    assertEquals("Hand of cards contains an illegal null card", exception.getMessage());
+  }
+
+  @Test
+  void getHandOfCardsReturnsDefensiveCopy() {
+    List<PlayingCard> cards = List.of(
+      new PlayingCard('H', 10),
+      new PlayingCard('H', 11),
+      new PlayingCard('H', 12),
+      new PlayingCard('H', 13),
+      new PlayingCard('H', 1)
+    );
+    HandOfCards hand = new HandOfCards(cards);
+    List<PlayingCard> handCards = hand.getHandOfCards();
+    assertEquals(cards, handCards);
+    handCards.set(0, new PlayingCard('D', 10));
+    assertNotEquals(cards, handCards);
   }
 
   @Test
@@ -194,4 +237,49 @@ public class HandOfCardsTest {
   void testnotHighCard() {
       assertNotEquals("High Card", royalFlush().evaluateHand());
   }
+
+  @Test
+  void testGetSumOfFaces() {
+    /*Ace is treated as 1, referencing to {@Link HandOfCards.getSumOfFaces()} */
+    assertEquals(47, royalFlush().getSumOfFaces());
+  }
+
+  @Test
+  void testGetCardsContainingHearts() {
+    assertEquals(5, royalFlush().getCardsContaining('H').size());
+    assertEquals(2, fourOfAKind().getCardsContaining('H').size());
+  }
+
+  @Test
+  void testGetCardsContainingSpades() {
+    assertEquals(5, straightFlush().getCardsContaining('S').size());
+    assertEquals(1, fullHouse().getCardsContaining('S').size());
+  }
+
+  @Test
+  void testGetCardsContainingClover() {
+    assertEquals(0, royalFlush().getCardsContaining('C').size());
+    assertEquals(5, flush().getCardsContaining('C').size());
+  }
+
+  @Test
+  void testGetCardsContainingDiamond() {
+    assertEquals(0, royalFlush().getCardsContaining('D').size());
+    assertEquals(1, straight().getCardsContaining('D').size());
+  }
+
+  @Test
+  void testGetCardsContainingInvalidSuit() {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+      royalFlush().getCardsContaining('X');
+    });
+    assertEquals("Parameter suit must be one of H, D, C or S", exception.getMessage());
+  }
+
+  @Test
+  void testHasQueenOfSpades() {
+    assertEquals(false, royalFlush().hasQueenOfSpades());
+    assertEquals(true, pair().hasQueenOfSpades());
+  }
+
 }
