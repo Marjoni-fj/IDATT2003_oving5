@@ -21,26 +21,21 @@ public class CardDisplay {
   private final SVGUniverse svgUniverse = new SVGUniverse();
   private final HBox deckDisplay;
   private final Label handLabel;
-  private final HBox checkDisplay;
   private List<PlayingCard> currentCards;
 
   /**
    * Creates a new {@code CardDisplay} with the specified {@code HBox} for displaying the cards and
    * {@code Label} for displaying the best possible poker hand.
    */
-  public CardDisplay(HBox deckDisplay, Label handLabel, HBox checkDisplay) {
+  public CardDisplay(HBox deckDisplay, Label handLabel) {
     if (deckDisplay == null) {
       throw new IllegalArgumentException("Deck display cannot be null");
     }
     if (handLabel == null) {
       throw new IllegalArgumentException("Hand label cannot be null");
     }
-    if (checkDisplay == null) {
-      throw new IllegalArgumentException("Check display cannot be null");
-    }
     this.deckDisplay = deckDisplay;
     this.handLabel = handLabel;
-    this.checkDisplay = checkDisplay;
   }
 
   /**
@@ -57,9 +52,7 @@ public class CardDisplay {
    * @throws IllegalArgumentException if the list of cards is null or contains null cards
    */
   public void showHand(List<PlayingCard> cards, String handText) {
-  if (cards == null || cards.contains(null)) {
-    throw new IllegalArgumentException("Cards cannot be null");
-  }
+  validateCards(cards);
   currentCards = cards;
   handLabel.setText(handText);
   showCards(cards, deckDisplay, 150);
@@ -72,7 +65,6 @@ public class CardDisplay {
     currentCards = null;
     deckDisplay.getChildren().clear();
     handLabel.setText("");
-    checkDisplay.getChildren().clear();
   }
 
   /**
@@ -84,17 +76,6 @@ public class CardDisplay {
     if (cards == null || cards.contains(null)) {
       throw new IllegalArgumentException("Cards cannot be null");
     }
-  }
-
-  /**
-   * Displays the specified list of playing cards in the check display area.
-   * @param cards the list of playing cards to display
-   * @param hearts the list of playing cards to display in the check display area
-   * @throws IllegalArgumentException if the list of cards is null or contains null cards
-   */
-  public void showHearts(List<PlayingCard> hearts) {
-    validateCards(hearts);
-    showCards(hearts, checkDisplay, 60);
   }
 
   /**

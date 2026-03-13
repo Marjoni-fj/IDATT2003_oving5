@@ -46,7 +46,6 @@ public class App extends Application {
 
 
     HBox deckDisplay = new HBox(10);
-    HBox checkDisplay = new HBox(5);
 
     Label handLabel = new Label();
     handLabel.setFont(new Font("Arial", 36));
@@ -63,19 +62,18 @@ public class App extends Application {
     flushLabel.setFont(new Font("Arial", 18));
 
     VBox cardDisplayWrapper = createCardDisplayWrapper(
-        deckDisplay, checkDisplay, handLabel,
+        deckDisplay, handLabel,
         sumLabel, heartsLabel, queenLabel, flushLabel);
 
     rootNode.setCenter(cardDisplayWrapper);
 
-    CardDisplay cardDisplay = new CardDisplay(deckDisplay, handLabel, checkDisplay);
+    CardDisplay cardDisplay = new CardDisplay(deckDisplay, handLabel);
 
     /* Deal hand */
     dealHand.setOnAction(e -> {
       DeckOfCards deck = new DeckOfCards();
       List<PlayingCard> dealtCards = deck.dealHand(5);
       HandOfCards hand = new HandOfCards(dealtCards);
-      checkDisplay.getChildren().clear();
       clearInfoLabels(sumLabel, heartsLabel, queenLabel, flushLabel);
       cardDisplay.clearDisplay();
       cardDisplay.showHand(dealtCards, hand.evaluateHand());
@@ -99,8 +97,6 @@ public class App extends Application {
       heartsLabel.setText("Hearts: " + heartsText);
       queenLabel.setText("Has Queen of Spades: " + (queenSpades ? "Yes" : "No"));
       flushLabel.setText("Has Flush: " + (flush ? "Yes" : "No"));
-
-      cardDisplay.showHearts(hearts);
     });
 
     primaryStage.setScene(new Scene(rootNode, 750, 750));
@@ -120,7 +116,6 @@ public class App extends Application {
 
   private VBox createCardDisplayWrapper(
         HBox deckDisplay,
-        HBox checkDisplay,
         Label handLabel,
         Label sumLabel,
         Label heartsLabel,
@@ -133,7 +128,6 @@ public class App extends Application {
     cardDisplayWrapper.getChildren().addAll(
         deckDisplay,
         handLabel,
-        checkDisplay,
         sumLabel,
         heartsLabel,
         queenLabel,
