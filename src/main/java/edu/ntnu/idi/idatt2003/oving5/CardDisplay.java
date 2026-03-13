@@ -28,12 +28,7 @@ public class CardDisplay {
    * {@code Label} for displaying the best possible poker hand.
    */
   public CardDisplay(HBox deckDisplay, Label handLabel) {
-    if (deckDisplay == null) {
-      throw new IllegalArgumentException("Deck display cannot be null");
-    }
-    if (handLabel == null) {
-      throw new IllegalArgumentException("Hand label cannot be null");
-    }
+    ArgumentValidator.validateCardDisplayArguments(deckDisplay, handLabel);
     this.deckDisplay = deckDisplay;
     this.handLabel = handLabel;
   }
@@ -52,7 +47,7 @@ public class CardDisplay {
    * @throws IllegalArgumentException if the list of cards is null or contains null cards
    */
   public void showHand(List<PlayingCard> cards, String handText) {
-  validateCards(cards);
+  ArgumentValidator.validateHandOfCards(cards);
   currentCards = cards;
   handLabel.setText(handText);
   showCards(cards, deckDisplay, 150);
@@ -68,17 +63,6 @@ public class CardDisplay {
   }
 
   /**
-   * Validates the list of playing cards, ensuring that it is not null and does not contain null cards.
-   * @throws IllegalArgumentException if the list of cards is null or contains null cards
-   * @param cards the list of playing cards to validate
-   */
-  private void validateCards(List<PlayingCard> cards) {
-    if (cards == null || cards.contains(null)) {
-      throw new IllegalArgumentException("Cards cannot be null");
-    }
-  }
-
-  /**
    * Displays the specified list of playing cards in the specified container with the specified height.
    * 
    * @param cards the list of playing cards to display
@@ -88,14 +72,8 @@ public class CardDisplay {
    * if the container is null, or if the height is not positive
    */
   private void showCards(List<PlayingCard> cards, HBox container, int height) {
-    validateCards(cards);
-
-    if (container == null) {
-      throw new IllegalArgumentException("Container cannot be null");
-    }
-    if (height <= 0) {
-      throw new IllegalArgumentException("Height must be positive");
-    }
+    ArgumentValidator.validateHandOfCards(cards);
+    ArgumentValidator.validateShowCard(container, height);
 
     container.getChildren().clear();
     for (PlayingCard card : cards) {
@@ -117,12 +95,8 @@ public class CardDisplay {
    * @throws Exception if there is an error loading or rendering the SVG image for the card
    */
   private ImageView createCardImage(PlayingCard card, int height) throws Exception {
-    if (card == null) {
-      throw new IllegalArgumentException("Card cannot be null");
-    }
-    if (height <= 0) {
-      throw new IllegalArgumentException("Height must be positive");
-    }
+    ArgumentValidator.validateCardImageCreation(card, height);
+
     String filePath = "/cards/" + faceToName(card.getFace()) +
         "_of_" + suitToName(card.getSuit()) + ".svg";
     URL url = getClass().getResource(filePath);
@@ -158,9 +132,7 @@ public class CardDisplay {
    * @throws IllegalArgumentException if the face value is not between 1 and 13
    */
   private String faceToName(int face) {
-    if (face < 1 || face > 13) {
-      throw new IllegalArgumentException("Invalid face value: " + face);
-    }
+    ArgumentValidator.validateFace(face);
     return switch (face) {
       case 1 -> "ace";
       case 11 -> "jack";
@@ -177,9 +149,7 @@ public class CardDisplay {
    * @throws IllegalArgumentException if the suit character is not valid
    */
   private String suitToName(char suit) {
-    if (suit != 'S' && suit != 'H' && suit != 'D' && suit != 'C') {
-      throw new IllegalArgumentException("Invalid suit: " + suit);
-    }
+    ArgumentValidator.validateSuit(suit);
     return switch (suit) {
       case 'S' -> "spades";
       case 'H' -> "hearts";

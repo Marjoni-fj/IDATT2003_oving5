@@ -5,6 +5,8 @@ import java.util.List;
 /**
  * Represents a deck of playing cards. A deck of cards consists of 52 unique
  * playing cards, one for each combination of the 4 suits and 13 faces.
+ * The deck can be used to deal hands of cards, which are represented by the {@code HandOfCards} class.
+ * The deck is initialized with all 52 cards, and the {@code dealHand} method can be used to shuffle the deck and deal a specified number of cards from the top of the deck.
  */
 public class DeckOfCards {
   private final List<PlayingCard> deckOfCards;
@@ -24,12 +26,10 @@ public class DeckOfCards {
   }
 
   /**
-   * Deals a hand of n cards from the deck. The method shuffles the deck before
-   * dealing the cards, and returns a list of n unique playing cards. If n is
-   * less than 0 or greater than the number of cards in the deck, the method throws
-   * an IllegalArgumentException.
+   * Deals a hand of n cards from the deck.
    * @param n the number of cards to deal
    * @return a list of n unique playing cards from the deck
+   * @throws IllegalArgumentException if n is negative or greater than the number of cards in the deck
    */
   public List<PlayingCard> dealHand(int n) {
     if (n < 0 || n > deckOfCards.size()) {
