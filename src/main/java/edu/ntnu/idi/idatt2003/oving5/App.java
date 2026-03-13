@@ -14,8 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
-import javafx.scene.control.Separator;
-import javafx.geometry.Orientation;
 
 public class App extends Application {
 
@@ -28,9 +26,6 @@ public class App extends Application {
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Poker");
     BorderPane rootNode = new BorderPane();
-    Separator separator = new Separator(Orientation.VERTICAL);
-    separator.setStyle("-fx-background-color: black;");
-    separator.setPrefWidth(3);
     
 
     /* Buttons */
@@ -44,17 +39,11 @@ public class App extends Application {
     checkHand.setOnMouseExited(e -> checkHand.setCursor(Cursor.DEFAULT));
 
     /*ButtonWrapper */
-    VBox buttonWrapper = new VBox(10);
-    buttonWrapper.setPadding(new Insets(20));
-    buttonWrapper.setStyle("-fx-background-color: lightgray; -fx-alignment: center;");
-    buttonWrapper.setPrefWidth(150);
+    VBox buttonWrapper = createButtonPanel(dealHand, checkHand);
     rootNode.setLeft(buttonWrapper);
 
-    buttonWrapper.getChildren().addAll(dealHand, checkHand);
-
     /* Card display */
-    VBox cardDisplayWrapper = new VBox(20);
-    cardDisplayWrapper.setPadding(new Insets(20));
+
 
     HBox deckDisplay = new HBox(10);
     HBox checkDisplay = new HBox(5);
@@ -73,10 +62,9 @@ public class App extends Application {
     Label flushLabel = new Label();
     flushLabel.setFont(new Font("Arial", 18));
 
-    cardDisplayWrapper.getChildren().addAll(
-      deckDisplay, handLabel, checkDisplay,
-      sumLabel, heartsLabel, queenLabel,
-      flushLabel);
+    VBox cardDisplayWrapper = createCardDisplayWrapper(
+        deckDisplay, checkDisplay, handLabel,
+        sumLabel, heartsLabel, queenLabel, flushLabel);
 
     rootNode.setCenter(cardDisplayWrapper);
 
@@ -86,13 +74,11 @@ public class App extends Application {
     dealHand.setOnAction(e -> {
       DeckOfCards deck = new DeckOfCards();
       List<PlayingCard> dealtCards = deck.dealHand(5);
-      sumLabel.setText("");
-      heartsLabel.setText("");
-      queenLabel.setText("");
-      flushLabel.setText("");
-      cardDisplay.clearDisplay();
+      HandOfCards hand = new HandOfCards(dealtCards);
       checkDisplay.getChildren().clear();
-      cardDisplay.showHand(dealtCards);
+      clearInfoLabels(sumLabel, heartsLabel, queenLabel, flushLabel);
+      cardDisplay.clearDisplay();
+      cardDisplay.showHand(dealtCards, hand.evaluateHand());
       checkHand.setDisable(false);
     });
 
@@ -119,5 +105,47 @@ public class App extends Application {
 
     primaryStage.setScene(new Scene(rootNode, 750, 750));
     primaryStage.show();
+  }
+
+  private VBox createButtonPanel(Button dealHand, Button checkHand) {
+    VBox buttonWrapper = new VBox(10);
+    buttonWrapper.setPadding(new Insets(20));
+    buttonWrapper.setStyle("-fx-background-color: lightgray; -fx-alignment: center;");
+    buttonWrapper.setPrefWidth(150);
+
+    buttonWrapper.getChildren().addAll(dealHand, checkHand);
+
+    return buttonWrapper;
+  }
+
+  private VBox createCardDisplayWrapper(
+        HBox deckDisplay,
+        HBox checkDisplay,
+        Label handLabel,
+        Label sumLabel,
+        Label heartsLabel,
+        Label queenLabel,
+        Label flushLabel) {
+
+    VBox cardDisplayWrapper = new VBox(20);
+    cardDisplayWrapper.setPadding(new Insets(20));
+
+    cardDisplayWrapper.getChildren().addAll(
+        deckDisplay,
+        handLabel,
+        checkDisplay,
+        sumLabel,
+        heartsLabel,
+        queenLabel,
+        flushLabel
+    );
+    return cardDisplayWrapper;
+  }
+
+  private void clearInfoLabels(Label sumLabel, Label heartsLabel, Label queenLabel, Label flushLabel) {
+    sumLabel.setText("");
+    heartsLabel.setText("");
+    queenLabel.setText("");
+    flushLabel.setText("");
   }
 }

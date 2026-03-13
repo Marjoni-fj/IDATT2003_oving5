@@ -51,60 +51,23 @@ public class CardDisplay {
     return currentCards;
   }
 
-  private void showCards(List<PlayingCard> cards, HBox container, int height) {
-  container.getChildren().clear();
-  for (PlayingCard card : cards) {
-    try {
-      String filePath =
-        "/cards/" +
-        faceToName(card.getFace()) +
-        "_of_" +
-        suitToName(card.getSuit()) +
-        ".svg";
-      URL url = getClass().getResource(filePath);
-      if (url == null) {
-        System.out.println("File not found: " + filePath);
-        continue;
-      }
-      URI uri = svgUniverse.loadSVG(url);
-      SVGDiagram diagram = svgUniverse.getDiagram(uri);
-
-      int width = Math.max(1, (int) diagram.getWidth());
-      int imgHeight = Math.max(1, (int) diagram.getHeight());
-
-      BufferedImage bufferedImage =
-        new BufferedImage(width, imgHeight, BufferedImage.TYPE_INT_ARGB);
-
-      Graphics2D g2d = bufferedImage.createGraphics();
-      diagram.render(g2d);
-      g2d.dispose();
-
-      ImageView imageView =
-        new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
-      imageView.setFitHeight(height);
-      imageView.setPreserveRatio(true);
-
-      container.getChildren().add(imageView);
-
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
+  /**
+   * Displays the specified list of playing cards and evaluates the hand.
+   * @param cards the list of playing cards to display
+   * @throws IllegalArgumentException if the list of cards is null or contains null cards
+   */
+  public void showHand(List<PlayingCard> cards, String handText) {
+  if (cards == null || cards.contains(null)) {
+    throw new IllegalArgumentException("Cards cannot be null");
   }
+  currentCards = cards;
+  handLabel.setText(handText);
+  showCards(cards, deckDisplay, 150);
 }
 
   /**
-   * Displays the specified list of playing cards and evaluates the hand.
+   * Clears the card display and resets the current cards.
    */
-  public void showHand(List<PlayingCard> cards) {
-    if (cards == null || cards.contains(null)) {
-    throw new IllegalArgumentException("Cards cannot be null");
-    }
-    currentCards = cards;
-    HandOfCards hand = new HandOfCards(cards);
-    handLabel.setText(hand.evaluateHand());
-    showCards(cards, deckDisplay, 150);
-  }
-
   public void clearDisplay() {
     currentCards = null;
     deckDisplay.getChildren().clear();
@@ -112,10 +75,100 @@ public class CardDisplay {
     checkDisplay.getChildren().clear();
   }
 
+  /**
+   * Validates the list of playing cards, ensuring that it is not null and does not contain null cards.
+   * @throws IllegalArgumentException if the list of cards is null or contains null cards
+   * @param cards the list of playing cards to validate
+   */
+  private void validateCards(List<PlayingCard> cards) {
+    if (cards == null || cards.contains(null)) {
+      throw new IllegalArgumentException("Cards cannot be null");
+    }
+  }
+
+  /**
+   * Displays the specified list of playing cards in the check display area.
+   * @param cards the list of playing cards to display
+   * @param hearts the list of playing cards to display in the check display area
+   * @throws IllegalArgumentException if the list of cards is null or contains null cards
+   */
   public void showHearts(List<PlayingCard> hearts) {
+    validateCards(hearts);
     showCards(hearts, checkDisplay, 60);
   }
 
+  /**
+   * Displays the specified list of playing cards in the specified container with the specified height.
+   * 
+   * @param cards the list of playing cards to display
+   * @param container the container to display the cards in
+   * @param height the height of each card image
+   * @throws IllegalArgumentException if the list of cards is null or contains null cards, 
+   * if the container is null, or if the height is not positive
+   */
+  private void showCards(List<PlayingCard> cards, HBox container, int height) {
+    validateCards(cards);
+
+    if (container == null) {
+      throw new IllegalArgumentException("Container cannot be null");
+    }
+    if (height <= 0) {
+      throw new IllegalArgumentException("Height must be positive");
+    }
+
+    container.getChildren().clear();
+    for (PlayingCard card : cards) {
+      try {
+        ImageView image = createCardImage(card, height);
+        container.getChildren().add(image);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+
+  /**
+   * Creates an ImageView for the specified playing card with the specified height.
+   * @param card the playing card to create an image for 
+   * @param height the height of the card image
+   * @return an ImageView containing the image of the specified playing card
+   * @throws Exception if there is an error loading or rendering the SVG image for the card
+   */
+  private ImageView createCardImage(PlayingCard card, int height) throws Exception {
+    if (card == null) {
+      throw new IllegalArgumentException("Card cannot be null");
+    }
+    if (height <= 0) {
+      throw new IllegalArgumentException("Height must be positive");
+    }
+    String filePath = "/cards/" + faceToName(card.getFace()) +
+        "_of_" + suitToName(card.getSuit()) + ".svg";
+    URL url = getClass().getResource(filePath);
+    if (url == null) {
+      throw new RuntimeException("File not found: " + filePath);
+    }
+    URI uri = svgUniverse.loadSVG(url);
+    SVGDiagram diagram = svgUniverse.getDiagram(uri);
+
+    int width = Math.max(1, (int) diagram.getWidth());
+    int imgHeight = Math.max(1, (int) diagram.getHeight());
+
+    BufferedImage bufferedImage =
+        new BufferedImage(width, imgHeight, BufferedImage.TYPE_INT_ARGB);
+
+    Graphics2D g2d = bufferedImage.createGraphics();
+    diagram.render(g2d);
+    g2d.dispose();
+
+    ImageView imageView =
+        new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
+
+    imageView.setFitHeight(height);
+    imageView.setPreserveRatio(true);
+
+    return imageView;
+  }
 
   /**
    * Converts face value to card name.

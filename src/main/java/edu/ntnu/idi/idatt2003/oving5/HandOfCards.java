@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * playing cards, which may be empty or contain any number of cards.
  */
 public class HandOfCards {
-  private List<PlayingCard> handOfCards;
+  private final List<PlayingCard> handOfCards;
 
   /**
    * Creates a new hand of cards with the specified list of playing cards.
