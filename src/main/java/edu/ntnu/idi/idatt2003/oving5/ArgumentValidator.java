@@ -79,7 +79,7 @@ public class ArgumentValidator {
       throw new IllegalArgumentException("Card cannot be null");
     }
     if (height <= 0) {
-      throw new IllegalArgumentException("Height must be positive");
+      throw new IllegalArgumentException("Height must be a positive number");
     }
   }
 
@@ -95,7 +95,7 @@ public class ArgumentValidator {
       throw new IllegalArgumentException("Container cannot be null");
     }
     if (height <= 0) {
-      throw new IllegalArgumentException("Height must be positive");
+      throw new IllegalArgumentException("Height must be a positive number");
     }
   }
 
