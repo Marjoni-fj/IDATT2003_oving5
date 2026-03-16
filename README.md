@@ -87,7 +87,7 @@ What is the input and output of the program? What is the expected behaviour of t
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Marjoni-fj/IDATT2003_oving5.git
+   git clone git@github.com:Marjoni-fj/IDATT2003_oving5.git
    
 2. **Open the Project:**  
    Open VS Code and select **File > Open Folder**, navigating to the root folder of the project (containing `pom.xml`).
