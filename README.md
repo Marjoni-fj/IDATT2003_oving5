@@ -69,7 +69,7 @@ This ensures:
 ## Link to repository📚
 
 [//]: # (TODO: Include a link to your GitHub repository here.)
-[GitHub Repository - IDATT2003 oving 3](https://github.com/Marjoni-fj/IDATT2003_oving3)
+[GitHub Repository - IDATT2003 oving 5](https://github.com/Marjoni-fj/IDATT2003_oving5)
 
 ---
 ## How to run the project📝
