@@ -52,7 +52,7 @@ java.edu.ntnu.idi.idatt2003.oving5
 The tests cover:
 - Normal use cases
 - Edge cases
-- Invalid input (e.g. `null` and empty strings)
+- Invalid input (e.g. `null` and invalid arguments)
 ---
 ## Maven layout ⚙️
 The project uses the standard Maven layout:
