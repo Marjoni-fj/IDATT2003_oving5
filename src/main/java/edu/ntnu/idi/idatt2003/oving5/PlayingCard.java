@@ -29,13 +29,8 @@ public class PlayingCard {
    * @throws IllegalArgumentException if suit or face have invalid values.
    */
   public PlayingCard(char suit, int face) {
-    if (suit != 'H' && suit != 'D' && suit != 'C' && suit != 'S') {
-      throw new IllegalArgumentException("Parameter suit must be one of H, D, C or S");
-    }
-
-    if (face < 1 || face > 13) {
-      throw new IllegalArgumentException("Parameter face must be a number between 1 to 13");
-    }
+    ArgumentValidator.validateSuit(suit);
+    ArgumentValidator.validateFace(face);
 
     this.suit = suit;
     this.face = face;
@@ -68,6 +63,11 @@ public class PlayingCard {
    */
   public int getFace() {
     return face;
+  }
+
+  @Override
+  public String toString() {
+    return "" + suit + face; // 'H' + 4 => "H4"
   }
 
   @Override

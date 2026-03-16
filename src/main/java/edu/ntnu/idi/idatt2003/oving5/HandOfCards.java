@@ -6,20 +6,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 /**
  * Represents a hand of playing cards. A hand of cards consists of a list of
- * playing cards, which may be empty or contain any number of cards.
+ * playing cards, which may be empty or contain any number of cards. 
  */
 public class HandOfCards {
-  private List<PlayingCard> handOfCards;
+  private final List<PlayingCard> handOfCards;
 
   /**
    * Creates a new hand of cards with the specified list of playing cards.
    * @param handOfCards the list of playing cards in the hand
   */
   public HandOfCards(List<PlayingCard> handOfCards) {
-    if (handOfCards == null || handOfCards.contains(null)) {
-      throw new IllegalArgumentException("Hand of cards cannot be null or contain null cards");
-    }
-    this.handOfCards = handOfCards;
+    ArgumentValidator.validateHandOfCards(handOfCards);
+    this.handOfCards = new ArrayList<>(handOfCards);
   }
 
   /**
@@ -27,15 +25,12 @@ public class HandOfCards {
    * @return the list of playing cards in the hand
    */
   public List<PlayingCard> getHandOfCards() {
-    return handOfCards;
+    return new ArrayList<>(handOfCards);
   }
 
   /**
    * Evaluates the hand of cards and returns a string representation of
    * the best possible poker hand that can be made with the cards in the hand.
-   * The method checks for each possible poker hand in order of rank, 
-   * starting with the highest rank (royal flush) and ending with the lowest rank (high card).
-
    * @return a {@code String} representation of the best possible poker hand 
    * that can be made with the cards in the hand
    */
@@ -50,21 +45,39 @@ public class HandOfCards {
     if (hasTwoPair()) return "Two Pair";
     if (hasPair()) return "Pair";
     return "High Card";
-}
-
-  /**
-  * Returns the sum of the face values of the cards in the hand. 
-  * The face value of a card is an integer that represents the rank of the card,
-  * with Ace being 1, Jack being 11, Queen being 12, and King being 13.
-  * @return the sum of the face values of the cards in the hand
-  */
-  public int getSumOfFaces() {
-    return handOfCards.stream().mapToInt(PlayingCard::getFace).sum();
   }
 
   /**
-   * Returns a map of face values to their counts in the hand. The keys of the map are the face values of the cards (1 to 13), and the values are the number of
-   * cards in the hand with that face value.
+  * Returns the sum of the face values of the cards in the hand. 
+  * As in poker, when calculating the sum of the face values, 
+  * the value of the Ace (face value 1) is treated as 14.
+  * @return the sum of the face values of the cards in the hand
+  */
+  public int getSumOfFaces() {
+    return handOfCards.stream().mapToInt(card -> card.getFace() == 1 ? 14 : card.getFace()).sum();
+  }
+
+  /**
+   * Returns true if the hand contains the Queen of Spades, which is a card with the suit 'S' and the face value 12.
+   * @return true if the hand contains the Queen of Spades, false otherwise
+   */
+  public boolean hasQueenOfSpades() {
+    return handOfCards.stream().anyMatch(card -> card.getFace() == 12 && card.getSuit() == 'S');
+  }
+
+  /**
+   * Returns a list of the cards in the hand that have the specified suit. 
+   * The suit is represented by a single character: 'S' for Spades, 'H' for Hearts, 'D' for Diamonds, and 'C' for Clubs.
+   * @param suit the suit to search for
+   * @return a list of cards with the specified suit
+   */
+  public List<PlayingCard> getCardsContaining(char suit) {
+    ArgumentValidator.validateSuit(suit);
+    return handOfCards.stream().filter(card -> card.getSuit() == suit).collect(Collectors.toList());
+  }
+
+  /**
+   * Returns a map of face values to their counts in the hand.
    * @return a map of face values to their counts in the hand
    */
   private Map<Integer, Long> getFaceCounts() {
@@ -77,8 +90,6 @@ public class HandOfCards {
 
 /**
  * Returns a map of suits to their counts in the hand. 
- * The keys of the map are the suits of the cards ('S', 'H', 'D', 'C'), and the values are the number of
- * cards in the hand with that suit.
  * @return a map of suits to their counts in the hand
  */
   private Map<Character, Long> getSuitCounts() {
@@ -89,11 +100,8 @@ public class HandOfCards {
   }
 
   /**
-   * Returns a sorted list of the face values of the cards in the hand, 
+   * Returns a sorted list of the face values of the cards in the hand in ascending order, 
    * treating Ace as either low (1) or high (14) depending on the value of aceHigh.
-   * If aceHigh is true, Ace is treated as high and its face value is considered to be 14. 
-   * If aceHigh is false, Ace is treated as low and its face value is considered to be 1.
-   * The returned list is sorted in ascending order.
    * @param aceHigh a boolean value that determines whether Ace is treated as high or low
    * @return a sorted list of the face values of the cards in the hand, with Ace treated as either high or low depending on the value of aceHigh
    */
@@ -109,8 +117,7 @@ public class HandOfCards {
 }
 
   /**
-   * Returns true if the hand contains a pair, which is a hand that contains two cards with the same face value.
-   * A pair is a common hand in poker, and is ranked higher than a high card but lower than two pair.
+   * Returns true if the hand contains a pair.
    * @return true if the hand contains a pair, false otherwise
    */
   public boolean hasPair() {
@@ -118,8 +125,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains two pair, which is a hand that contains two different pairs of cards with the same face value.
-   * Two pair is a hand in poker that is ranked higher than a pair but lower than three of a kind.
+   * Returns true if the hand contains two pair.
    * @return true if the hand contains two pair, false otherwise
    */
   public boolean hasTwoPair() {
@@ -127,9 +133,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains three of a kind, which is a hand that contains three cards with the same face value.
-   * Three of a kind is a hand in poker that is ranked higher than two pair but
-   * lower than a straight.
+   * Returns true if the hand contains three of a kind.
    * @return true if the hand contains three of a kind, false otherwise
    */
   public boolean hasThreeOfAKind() {
@@ -137,8 +141,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains a straight, which is a hand that contains five cards with consecutive face values, regardless of their suits.
-   * A straight is a hand in poker that is ranked higher than three of a kind but lower than a flush.
+   * Returns true if the hand contains a straight.
    * @return true if the hand contains a straight, false otherwise
    */
   public boolean hasStraight() {
@@ -152,8 +155,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains a flush, which is a hand that contains five cards of the same suit, regardless of their face values.
-   * A flush is a hand in poker that is ranked higher than a straight but lower than a full house. 
+   * Returns true if the hand contains a flush. 
    * @return true if the hand contains a flush, false otherwise
    */
   public boolean hasFlush() {
@@ -161,9 +163,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains a full house, which is a hand that contains three cards with the 
-   * same face value and two cards with another face value.
-   * A full house is a hand in poker that is ranked higher than a flush but lower than four of a kind. 
+   * Returns true if the hand contains a full house. 
    * @return true if the hand contains a full house, false otherwise
    */
   public boolean hasFullHouse() {
@@ -172,8 +172,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains four of a kind, which is a hand that contains four cards with the same face value.
-   * Four of a kind is a hand in poker that is ranked higher than a full house but lower than a straight flush.
+   * Returns true if the hand contains four of a kind.
    * @return true if the hand contains four of a kind, false otherwise
    */
   public boolean hasFourOfAKind() {
@@ -181,8 +180,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains a straight flush, which is a hand that contains five cards with consecutive face values, all of the same suit.
-   * A straight flush is a hand in poker that is ranked higher than four of a kind but lower than a royal flush.
+   * Returns true if the hand contains a straight flush.
    * @return true if the hand contains a straight flush, false otherwise
    */
   public boolean hasStraightFlush() {
@@ -190,8 +188,7 @@ public class HandOfCards {
   }
 
   /**
-   * Returns true if the hand contains a royal flush, which is a straight flush consisting of the cards 10, Jack (11), Queen (12), King (13) and Ace (14).
-   * A royal flush is the highest possible hand in poker, and is a special case of a straight flush. 
+   * Returns true if the hand contains a royal flush. 
    * @return true if the hand contains a royal flush, false otherwise
    */
   public boolean hasRoyalFlush() {

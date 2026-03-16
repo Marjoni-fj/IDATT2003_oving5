@@ -42,9 +42,12 @@ class PlayingCardTest {
 
   @Test
   void testIllegalCard() {
-    assertThrows(IllegalArgumentException.class, () -> new PlayingCard('X', 12));
-    assertThrows(IllegalArgumentException.class, () -> new PlayingCard('C', 0));
-    assertThrows(IllegalArgumentException.class, () -> new PlayingCard('H', 14));
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new PlayingCard('X', 12));
+    assertEquals("Parameter suit must be one of H, D, C or S", exception.getMessage());
+    exception = assertThrows(IllegalArgumentException.class, () -> new PlayingCard('C', 0));
+    assertEquals("Parameter face must be a number between 1 to 13", exception.getMessage());
+    exception = assertThrows(IllegalArgumentException.class, () -> new PlayingCard('H', 14));
+    assertEquals("Parameter face must be a number between 1 to 13", exception.getMessage());
   }
 
   @Test
@@ -68,6 +71,27 @@ class PlayingCardTest {
   void testEqualsWithNull() {
     assertFalse(testCard.equals(null));
   }
+
+  @Test
+  void testEqualsWithDifferentClass() {
+      assertFalse(testCard.equals("H4"));
+  }
+
+  @Test
+  void testEqualsContract() {
+    PlayingCard Card1 = new PlayingCard('D', 5);
+    PlayingCard Card2 = new PlayingCard('D', 5);
+    PlayingCard Card3 = new PlayingCard('D', 5);
+
+    assertTrue(Card1.equals(Card1));
+
+    assertTrue(Card1.equals(Card2));
+    assertTrue(Card2.equals(Card1));
+
+    assertTrue(Card1.equals(Card2));
+    assertTrue(Card2.equals(Card3));
+    assertTrue(Card1.equals(Card3));
+}
 
   @Test
   void testHashCode() {
