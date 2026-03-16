@@ -49,10 +49,12 @@ public class HandOfCards {
 
   /**
   * Returns the sum of the face values of the cards in the hand. 
+  * As in poker, when calculating the sum of the face values, 
+  * the value of the Ace (face value 1) is treated as 14.
   * @return the sum of the face values of the cards in the hand
   */
   public int getSumOfFaces() {
-    return handOfCards.stream().mapToInt(PlayingCard::getFace).sum();
+    return handOfCards.stream().mapToInt(card -> card.getFace() == 1 ? 14 : card.getFace()).sum();
   }
 
   /**

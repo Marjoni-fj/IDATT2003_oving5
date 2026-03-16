@@ -240,8 +240,8 @@ public class HandOfCardsTest {
 
   @Test
   void testGetSumOfFaces() {
-    /*Ace is treated as 1, referencing to {@Link HandOfCards.getSumOfFaces()} */
-    assertEquals(47, royalFlush().getSumOfFaces());
+    /*Ace is treated with the value 14, referencing to {@Link HandOfCards.getSumOfFaces()} */
+    assertEquals(60, royalFlush().getSumOfFaces());
   }
 
   @Test
