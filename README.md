@@ -102,7 +102,7 @@ What is the input and output of the program? What is the expected behaviour of t
 5. **Run the Application:**
    #### Expected behavior:
    The program opens up a window where the user can deal a card and test their luck.
-   All of the poker hand rankings can be thouroghly read [here](https://www.poker.org/poker-hands-ranking-chart/)
+   All of the poker hand rankings can be thouroghly read [here](https://www.pokernews.com/poker-hands/)
    After a user has dealt their card, they can check the hand, and a small check is executed on the user's hand.
   
    
