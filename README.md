@@ -1,77 +1,150 @@
-# IDATT2003_oving5
+# IDATT2003_oving5 :octocat: 
 
-## Funksjonell programmering og GUI
+[//]: # (TODO: Fill inn your name and student ID)
+[//]: # (TODO: Mappe-2025-Marjoni-fj)
 
-I denne innleveringen skal du jobbe med GUI, lambdauttrykk og streams. I tillegg skal du (som alltid) lage enhetstester, opprette Maven-prosjekt, og praktisere versjonskontroll med Git både lokalt og mot sentralt repo (GitLab/GitHub).
+**STUDENT NAME = Fredrik Jonathan Marjoni** 
 
-Innleveringen består av et miniprosjekt (kortspill, se beskrivelse under). Vi anbefaler at du bruker dette prosjektet til å bli kjent med GUI med JavaFX, lambda-uttrykk, streams og filter, før du starter med å implementere GUI i mappen.
+## Project description💻
 
-Arbeidskravet gjennomføres individuelt. Når du har løst oppgaven må du levere i BB og vise frem det du har gjort til en læringsassistent for godkjenning.
+[//]: # (TODO: Write a short description of your project/product here.)
+This project is a GUI Java-based Poker game developed using Maven.  
+The goal of the project is to demonstrate correct and effective use of:
 
-# Problembeskrivelse – Miniprosjekt "Kortspill"
+- JavaFX
+- Java Streams
+- Interactive Design
+- Unit testing with JUnit 5
 
-Du skal utvikle et enkelt kortspill. Kortspillet består av en kortstokk (engelsk: DeckOfCards) som inneholder 52 kort (engelsk: PlayingCard). Det skal være mulig å dele ut en "hånd med kort" (engelsk: HandOfCards) til en spiller. Det skal deles ut minimum 5 kort.
+## Project structure 📁
+The project follows the standard Maven directory structure.  
+Source code and tests are clearly separated, and packages are organized by responsibility.
 
-I kortspillet poker (blant annet), er en av kortkombinasjonene som gir poeng en flush (<https://en.wikipedia.org/wiki/Flush_(cards)>). Ditt program skal blant annet sjekke korthånden for 5-korts flush (altså 5 kort av samme farge, som f.eks. 5 hjerter eller 5 kløver), fortrinnsvis ved bruk av streams (med tilhørende funksjoner som filter, map osv.).
+### Main Package Structure (`src/main`)
+<pre>
+java.edu.ntnu.idi.idatt2003.oving5
+  ├── App.java
+  ├── ArgumentValidator.java
+  ├── CardDisplay.java
+  ├── DeckOfCards.java
+  ├── HandOfCards.java
+  └── PlayingCard.java
+recources
+  └── cards
+    └── (All 52 playing cards).svg
+</pre>
+[//]: # (TODO: Describe the structure of your project here. How have you used packages in your structure. Where are all sourcefiles stored. Where are all JUnit-test classes stored. etc.)
 
-Du står helt fritt når det gjelder utforming av GUI. I enkleste form kan du presentere en korthånd som en streng på formen "H4 H12 C3 D11 S1", der bokstavene 'H', 'D', 'C' og 'S' står for henholdsvis "Hearts", "Diamonds", "Clubs" og "Spades". Dersom du ønsker en ekstra utfordring, kan du også velge å vise kortene som bilder. Du finner mange eksempler på internett på hvordan du kan få til dette.
+## JUnit tests 🧪
 
-Oppgavene under leder deg gjennom steg for steg.
+All unit tests are written using **JUnit 5** and mirror the main package structure.
 
-## Oppgave 1
+### Test package structure (`src/test`)
+<pre>
+java.edu.ntnu.idi.idatt2003.oving5
+  ├── AppTest.java
+  ├── ArgumentValidatorTest.java
+  ├── DeckOfCardsTest.java
+  ├── HandOfCardsTest.java
+  └── PlayingCardTest.java
+</pre>
 
-Gitt vedlagt kode for en klasse som representerer et kort i en kortstokk (PlayingCard.java):
+The tests cover:
+- Normal use cases
+- Edge cases
+- Invalid input (e.g. `null` and empty strings)
+---
+## Maven layout ⚙️
+The project uses the standard Maven layout:
 
-Sett opp Maven-prosjektet riktig med en fornuftig artifactID og groupID, og med nødvendige avhengigheter og plugins for å kunne utvikle en JavaFX- applikasjon og for å kunne skrive enhetstester. Opprett også en fornuftig .gitignore-fil (om den ikke allerede finnes).
+- `src/main/java` – application source code
+- `src/test/java` – unit tests
+- `pom.xml` – project configuration and dependencies
 
-Bruk samme versjon av JDK, avhengigheter og plugins som dere skal bruke i mappa. Test også at programmet ditt kjører fra kommandolinja med kommandoen mvn javafx:run.
+This ensures:
+- Clean separation of production and test code
+- Easy integration with IDEs (VS Code, IntelliJ, Eclipse)
+- Simple build and test execution
+---
+## Link to repository📚
 
-Fortsett deretter utviklingen av applikasjonen ved å følge oppgavene under.
+[//]: # (TODO: Include a link to your GitHub repository here.)
+[GitHub Repository - IDATT2003 oving 3](https://github.com/Marjoni-fj/IDATT2003_oving3)
 
-## Oppgave 2
+---
+## How to run the project📝
 
-Lag en klasse DeckOfCards som representerer en fullstendig kortstokk (52 kort). Du velger selv hvilken klasse fra Java-biblioteket du bruker for å holde på alle kortene. Konstruktøren skal opprette alle 52 kortene.
+[//]: # (TODO: Describe how to run your project here. What is the main class? What is the main method?
+What is the input and output of the program? What is the expected behaviour of the program?)
 
-Tips:
+### Requirements
+- Java JDK 25
+- JavaFX
+- Maven
+- An IDE such as VS Code or IntelliJ
 
-For å håndtere fargen (hjerte, spar osv), lag en fixed size array som følger:
+### Steps
 
-private final char[] suit = { 'S', 'H', 'D', 'C' };
-Da kan du enkelt gjøre om fra tall 0 til 3 til bokstaven som representerer fargen, for eksempel i en for-løkke.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Marjoni-fj/IDATT2003_oving5.git
+   
+2. **Open the Project:**  
+   Open VS Code and select **File > Open Folder**, navigating to the root folder of the project (containing `pom.xml`).
+   ````bash
+   cd IDATT2003_oving5
+   
+4. **Build the Project:**  
+   Open the terminal in VS Code (`Ctrl + ~`) and run:  
+   ```bash
+   mvn clean compile
+   
+5. **Run the Application:**
+   #### Expected behavior:
+   The program opens up a window where the user can deal a card and test their luck. After a user has dealt their card, they can check the hand, and a small check is executed on the user's hand.
+   
+   Start the program by running the main class:
+    ```bash
+   mvn javafx:run
+---
+## How to run the tests 🧪
+This project uses JUnit 5 for unit testing. 
+All test classes mirror the main package structure and are stored in `src/test/java/edu/ntnu`
 
-## Oppgave 3
+- ### Open the Project:
+   Open VS Code and select **File > Open Folder**, navigating to the root folder of the project (containing `pom.xml`).
+  ````bash
+   cd IDATT2003_oving5
 
-Lag en metode «dealHand(int n)» i klassen DeckOfCards som plukker tilfeldig n kort fra kortstokken og returnerer disse i en samling (collection). «n» er et tall mellom 1 og 52 som sendes inn som parameter til funksjonen. Denne funksjonen kan for eksempel brukes til å trekke n tilfeldige kort fra kortstokken. Du velger igjen selv hvilken klasse/interface fra Java-biblioteket du bruker som returtype på metoden. Tips: Du bør bruke Random-klassen for å oppnå tilfeldighet.
+- ### Run all tests
+   To execute the full test suite, run:
+   ```bash
+   mvn clean test
 
-Her kan du også vurdere om det vil være nyttig å lage en egen klasse for å representere en hånd med kort. Da kan man for eksempel legge til metoder på denne klassen for å f.eks. sjekke for flush og andre poenggivende kombinasjoner.
+This command:
+   1. Cleans old build files
+   2. Compiles the main source code
+   3. Compiles the tests
+   4. Runs all JUnit tests
+---
+ - ### Viewing test results
+After the tests finish, Maven creates detailed reports here: 
+`target/surefire-reports/`
 
-## Oppgave 4
+Each report includes:
+   1. Test class summaries
+   2. Stack traces for any failures
+   3. Execution times
+   4. Running tests in an IDE
 
-Da er vi klar for å lage GUI. Du velger selv hvordan du designer ditt GUI, og med hvilket verktøy. Det er altid lurt å lage en wireframe/mockup først. Bruk gjerne et verktøy som f.eks. Balsamiq eller Figma. Det er også lov å tegne for hånd ;-)
+[//]: # (TODO: Describe how to run the tests here.)
 
-Du skal kode GUI i Java (JavaFX) og ikke bruke FXML.
+## References 🔗
+[//]: # (TODO: Include references here, if any. For example, if you have used code from the course book, include a reference to the chapter.
+Or if you have used code from a website or other source, include a link to the source.)
+Course textbook and lecture materials
+Maven documentation: https://maven.apache.org/
+JUnit 5: https://junit.org/junit5/
 
-Her er et eksempel på en wireframe (NB! dette er ikke et krav. Du har frihet til å designe GUI akkurat som du selv vil):
-
-Knappen "Deal hand" deler ut en hånd med kort fra kortstokken (ved bruk av dealHand(int n)-metoden fra Oppgave 3).
-
-## Oppgave 5
-
-I denne oppgaven skal du analysere kortene på hånd (se punktliste under). I forslaget til GUI (wireframe over) vil dette typisk skje når brukeren trykker på knappen "Check hand".
-
-Her er det meningen at du skal anvende streams med tilhørende funskjoner for filtrering, map, reduce osv. Prøv å løse så mange du klarer av følgende:
-
-Regn ut summen av alle verdiene av kortene på hånd (ess = 1)
-Hent ut bare kort som er av fargen "Hjerter", og vis i et tekstfelt på formen "H12 H9 H1". Dersom det ikke er noen Hjerter på hånd, kan tekstfeltet inneholde teksten "No Hearts", for eksempel.
-Sjekk om kortet "Spar dame" finnes blant kortene på hånden.
-Sjekk om kortene på hånd utgjør en "5-flush". D.v.s. 5 kort av samme farge (5 hjerter eller 5 ruter eller 5 kløver eller 5 spar).
-
-# INNLEVERING
-
-Husk at du hele veien skal sjekke inn (commit) endringene du gjør i koden fortløpende til ditt lokale repository. Push også endringene i lokalt repo til remote repo nå og da.
-
-Når du er ferdig med CardGame-applikasjonen, gjør du som følger:
-
-Lag en zip-fil av prosjektmappen din (slik som du gjorde i Mappe – Del 1) og legg ved som svar på denne oppgaven.
-Push de siste endringene til remote repository og lim inn URL'en til ditt remote repo i tekstfeltet for innleveringen.
-Vis frem det du har gjort til en læringsassistent for godkjennin
+---
+"""
