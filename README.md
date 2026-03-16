@@ -8,7 +8,7 @@
 ## Project description💻
 
 [//]: # (TODO: Write a short description of your project/product here.)
-This project is a GUI Java-based Poker game developed using Maven.  
+This project is a simple GUI Java-based Poker game developed using Maven.  
 The goal of the project is to demonstrate correct and effective use of:
 
 - JavaFX
@@ -101,7 +101,10 @@ What is the input and output of the program? What is the expected behaviour of t
    
 5. **Run the Application:**
    #### Expected behavior:
-   The program opens up a window where the user can deal a card and test their luck. After a user has dealt their card, they can check the hand, and a small check is executed on the user's hand.
+   The program opens up a window where the user can deal a card and test their luck.
+   All of the poker hand rankings can be thouroghly read [here](https://www.poker.org/poker-hands-ranking-chart/)
+   After a user has dealt their card, they can check the hand, and a small check is executed on the user's hand.
+  
    
    Start the program by running the main class:
     ```bash
